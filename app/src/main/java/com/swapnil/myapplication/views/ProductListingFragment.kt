@@ -38,7 +38,7 @@ class ProductListingFragment : Fragment() {
         productViewMode.productList.observe(this) {
             productAdapter.submitList(it)
         }
-        productViewMode.getAllProducts()
+        productViewMode.getAllProducts(requireContext())
     }
 
 

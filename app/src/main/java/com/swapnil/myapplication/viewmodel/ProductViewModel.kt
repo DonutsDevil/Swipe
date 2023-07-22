@@ -1,5 +1,6 @@
 package com.swapnil.myapplication.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.swapnil.myapplication.model.Product
 import com.swapnil.myapplication.repository.ProductRepository
@@ -12,9 +13,9 @@ class ProductViewModel(private val productRepository: ProductRepository): ViewMo
     val productList: LiveData<List<Product>>
         get() = _productList
 
-    fun getAllProducts() {
+    fun getAllProducts(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val productList = productRepository.getAllProducts()
+            val productList = productRepository.getAllProducts(context)
             _productList.postValue(productList)
         }
     }

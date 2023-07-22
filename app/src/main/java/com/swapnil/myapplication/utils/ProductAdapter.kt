@@ -3,10 +3,14 @@ package com.swapnil.myapplication.utils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.swapnil.myapplication.R
 import com.swapnil.myapplication.model.Product
 
@@ -27,12 +31,14 @@ class ProductAdapter: ListAdapter<Product, ProductAdapter.Companion.Holder>(Prod
             private val productName: TextView
             private val productPrice: TextView
             private val productTax: TextView
+            private val productImage: ImageView
 
             init {
                 productType = itemView.findViewById(R.id.tv_product_type)
                 productName = itemView.findViewById(R.id.tv_product_name)
                 productPrice = itemView.findViewById(R.id.tv_product_price)
                 productTax = itemView.findViewById(R.id.tv_product_tax)
+                productImage = itemView.findViewById(R.id.iv_productImage)
 
             }
 
@@ -41,6 +47,14 @@ class ProductAdapter: ListAdapter<Product, ProductAdapter.Companion.Holder>(Prod
                 productName.text = product.name
                 productPrice.text = itemView.context.getString(R.string.product_price, String.format("%.2f", product.price))
                 productTax.text = itemView.context.getString(R.string.product_tax, String.format("%.2f", product.tax))
+                loadImage(product.images)
+            }
+
+            private fun loadImage(imageUrl: String?) {
+                Glide.with(itemView)
+                    .load(imageUrl)
+                    .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).error(R.drawable.error).centerInside())
+                    .into(productImage)
             }
         }
     }
