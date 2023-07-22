@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/productListingFragment"
         android:name="com.swapnil.myapplication.views.ProductListingFragment"
-        android:label="fragment_product_listing"
+        android:label="Products Listing"
         tools:layout="@layout/fragment_product_listing" />
 </navigation>
