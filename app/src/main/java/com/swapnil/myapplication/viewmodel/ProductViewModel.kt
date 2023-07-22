@@ -4,24 +4,22 @@ import android.content.Context
 import androidx.lifecycle.*
 import com.swapnil.myapplication.model.Product
 import com.swapnil.myapplication.repository.ProductRepository
+import com.swapnil.myapplication.repository.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProductViewModel(private val productRepository: ProductRepository): ViewModel() {
 
-    private val _productList = MutableLiveData<List<Product>>()
-    val productList: LiveData<List<Product>>
+    private val _productList = MutableLiveData<State<List<Product>>>()
+    val productList: LiveData<State<List<Product>>>
         get() = _productList
 
     fun getAllProducts(context: Context) {
+        _productList.postValue(State.Loading())
         viewModelScope.launch(Dispatchers.IO) {
-            val productList = productRepository.getAllProducts(context)
-            _productList.postValue(productList)
+            val productState = productRepository.getAllProducts(context)
+            _productList.postValue(productState)
         }
-    }
-
-    fun clearAllProductsCache() {
-        _productList.postValue(emptyList())
     }
 }
 
