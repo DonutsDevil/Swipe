@@ -1,6 +1,8 @@
 package com.swapnil.myapplication.model
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.File
 
 data class Product(
     @SerializedName("image")
@@ -12,5 +14,7 @@ data class Product(
     @SerializedName("product_type")
     val type: String? = null,
     @SerializedName("tax")
-    val tax: Double? = null
+    val tax: Double? = null,
+    @Expose(serialize = false, deserialize = false)
+    val file: File? = null // only used when doing post request to the product.
 )
