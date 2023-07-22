@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <!--  Product Listing  -->
+    <string name="product_price">Price: ₹%s</string>
+    <string name="product_tax">Tax: ₹%s</string>
 </resources>
