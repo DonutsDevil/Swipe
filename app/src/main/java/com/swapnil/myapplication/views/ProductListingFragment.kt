@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.swapnil.myapplication.R
 import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.ProductRepository
@@ -24,6 +25,8 @@ class ProductListingFragment : Fragment() {
     lateinit var productAdapter: ProductAdapter
 
     lateinit var rvProductList: RecyclerView
+    lateinit var swipeRefreshListing: SwipeRefreshLayout
+    lateinit var swipeRefreshLayoutError: SwipeRefreshLayout
 
     lateinit var progressBar: ProgressBar
     lateinit var ivError: ImageView
@@ -50,20 +53,26 @@ class ProductListingFragment : Fragment() {
                     productListLoading()
                 }
                 is State.Success -> {
+                    swipeRefreshListing.isRefreshing = false
                     productAdapter.submitList(state.data)
                     productListingSuccess()
                 }
                 is State.Error -> {
+                    swipeRefreshLayoutError.isRefreshing = false
                     productListingError()
                 }
             }
 
         }
         productViewMode.getAllProducts(requireContext())
-    }
+        refreshProductList(swipeRefreshListing)
+        refreshProductList(swipeRefreshLayoutError)
+        }
 
     private fun initView(view: View) {
         rvProductList = view.findViewById(R.id.rv_productList)
+        swipeRefreshListing = view.findViewById(R.id.swipeRefreshLayout_listing)
+        swipeRefreshLayoutError = view.findViewById(R.id.swipeRefreshLayout_error)
         progressBar = view.findViewById(R.id.progressBar)
         ivError = view.findViewById(R.id.iv_error)
     }
@@ -75,15 +84,19 @@ class ProductListingFragment : Fragment() {
     }
 
     private fun productListLoading() {
-        if (progressBar.visibility != View.VISIBLE) {
+        if (progressBar.visibility != View.VISIBLE && !swipeRefreshListing.isRefreshing) {
             progressBar.visibility = View.VISIBLE
         }
         ivError.visibility = View.GONE
+        swipeRefreshLayoutError.visibility = View.GONE
     }
 
     private fun productListingSuccess() {
         progressBar.visibility = View.GONE
         ivError.visibility = View.GONE
+        if (swipeRefreshListing.visibility != View.VISIBLE) {
+            swipeRefreshListing.visibility = View.VISIBLE
+        }
         if (rvProductList.visibility != View.VISIBLE) {
             rvProductList.visibility = View.VISIBLE
         }
@@ -92,8 +105,19 @@ class ProductListingFragment : Fragment() {
     private fun productListingError() {
         progressBar.visibility = View.GONE
         rvProductList.visibility = View.GONE
+        swipeRefreshListing.visibility = View.GONE
+        if (swipeRefreshLayoutError.visibility != View.VISIBLE) {
+            swipeRefreshLayoutError.visibility = View.VISIBLE
+        }
+        swipeRefreshLayoutError.visibility = View.VISIBLE
         if (ivError.visibility != View.VISIBLE) {
             ivError.visibility = View.VISIBLE
+        }
+    }
+
+    private fun refreshProductList(swipeLayout: SwipeRefreshLayout) {
+        swipeLayout.setOnRefreshListener {
+            productViewMode.getAllProducts(requireContext())
         }
     }
 }
