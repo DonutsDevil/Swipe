@@ -6,7 +6,7 @@ import java.io.File
 
 data class Product(
     @SerializedName("image")
-    val images: List<String>? = null,
+    val images: String? = null,
     @SerializedName("price")
     val price: Double? = null,
     @SerializedName("product_name")

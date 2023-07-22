@@ -6,7 +6,6 @@ import com.swapnil.myapplication.constants.NetworkConstants
 import com.swapnil.myapplication.model.Product
 import com.swapnil.myapplication.model.ProductResponse
 import com.swapnil.myapplication.network.SwipeNetwork
-import com.swapnil.myapplication.utils.deserializers.ProductDeserializer
 
 
 class ProductNetworkServiceImpl: ProductNetworkService {
@@ -28,6 +27,6 @@ class ProductNetworkServiceImpl: ProductNetworkService {
     }
 
     private fun getRetrofitInstance(): ProductAPI {
-        return SwipeNetwork.getRetrofitInstance(NetworkConstants.PRODUCT_BASE_URL, ProductDeserializer().getProductDeserializerGson())!!.create(ProductAPI::class.java)
+        return SwipeNetwork.getRetrofitInstance(NetworkConstants.PRODUCT_BASE_URL)!!.create(ProductAPI::class.java)
     }
 }
