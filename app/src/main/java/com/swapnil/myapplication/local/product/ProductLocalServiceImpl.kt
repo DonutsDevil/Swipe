@@ -4,6 +4,9 @@ import android.content.Context
 import com.swapnil.myapplication.local.SwipeDB
 import com.swapnil.myapplication.model.Product
 
+/**
+ * Local DB service Implementation
+ */
 class ProductLocalServiceImpl: ProductLocalService {
 
     override suspend fun addProducts(productList: List<Product>, context: Context) {

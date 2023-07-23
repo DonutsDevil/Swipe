@@ -21,7 +21,9 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import java.io.File
 
-
+/**
+ * Server service Implementation
+ */
 class ProductNetworkServiceImpl : ProductNetworkService {
     private val TAG = "ProductNetworkServiceIm"
 

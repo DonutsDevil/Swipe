@@ -10,6 +10,9 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
+/**
+ * Retrofit API calls Service
+ */
 interface ProductAPI {
     @GET("/api/public/get")
     suspend fun getAllProducts(): Response<List<Product>?>?
