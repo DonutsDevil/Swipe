@@ -21,8 +21,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.swapnil.myapplication.R
+import com.swapnil.myapplication.model.ProductResponse
 import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
+import com.swapnil.myapplication.repository.AddProductErrors
 import com.swapnil.myapplication.repository.ProductRepository
+import com.swapnil.myapplication.repository.State
 import com.swapnil.myapplication.viewmodel.ProductViewModel
 import com.swapnil.myapplication.viewmodel.ProductViewModelFactory
 import com.yalantis.ucrop.UCrop
@@ -67,12 +70,52 @@ class AddProductFragment : Fragment() {
             imagePickerLauncher.launch(intent)
         }
         setProductLabelAndEditText()
+        btnAddProduct.setOnClickListener {
+            productViewModel.addProduct(
+                name = etProductName.text?.toString(),
+                type = etProductType.text?.toString(),
+                price = etProductPrice.text?.toString(),
+                tax = etProductTax.text?.toString()
+            )
+        }
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        productViewModel.addProduct.observe(this) { state ->
+            when(state) {
+                is State.Loading -> {
+
+                }
+
+                is State.Error -> {
+                    setError(state)
+                }
+
+                is State.Success -> {
+
+                }
+
+                is State.Reset -> {
+                    // do nothing
+                }
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        productViewModel.setProductValues(name = etProductName.text.toString(), type = etProductType.text.toString(), price = etProductPrice.text.toString(), tax = etProductTax.text.toString())
+        productViewModel.setProductValues(
+            name = etProductName.text?.toString(),
+            type = etProductType.text?.toString(),
+            price = etProductPrice.text?.toString(),
+            tax = etProductTax.text?.toString()
+        )
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        productViewModel.clearAddProductCache()
     }
 
     private fun initView(view: View) {
@@ -176,5 +219,25 @@ class AddProductFragment : Fragment() {
         Log.d(TAG, "handleCroppedImage: croppedUri: $croppedUri")
         productViewModel.setProductValues(imageUri = croppedUri)
         ivSelectImage.setImageURI(croppedUri)
+    }
+
+    private fun setError(state: State.Error<ProductResponse>) {
+        when(state.errorMessage) {
+            AddProductErrors.NAME.name -> {
+                etProductName.error = AddProductErrors.NAME.errorMessage
+            }
+
+            AddProductErrors.TYPE.name -> {
+                etProductType.error = AddProductErrors.TYPE.errorMessage
+            }
+
+            AddProductErrors.PRICE.name -> {
+                etProductPrice.error = AddProductErrors.PRICE.errorMessage
+            }
+
+            AddProductErrors.TAX.name -> {
+                etProductTax.error = AddProductErrors.TAX.errorMessage
+            }
+        }
     }
 }

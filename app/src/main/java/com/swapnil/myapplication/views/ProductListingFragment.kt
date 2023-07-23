@@ -68,6 +68,9 @@ class ProductListingFragment : Fragment() {
                     swipeRefreshLayoutError.isRefreshing = false
                     productListingError()
                 }
+                is State.Reset -> {
+                    // do nothing
+                }
             }
 
         }
