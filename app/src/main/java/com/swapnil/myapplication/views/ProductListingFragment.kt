@@ -1,12 +1,12 @@
 package com.swapnil.myapplication.views
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,22 +18,24 @@ import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.ProductRepository
 import com.swapnil.myapplication.repository.State
 import com.swapnil.myapplication.utils.ProductAdapter
+import com.swapnil.myapplication.utils.hideLoadingDialog
+import com.swapnil.myapplication.utils.showLoadingDialog
 import com.swapnil.myapplication.viewmodel.ProductViewModel
 import com.swapnil.myapplication.viewmodel.ProductViewModelFactory
 
 class ProductListingFragment : Fragment() {
 
-    lateinit var productViewMode: ProductViewModel
-    lateinit var productAdapter: ProductAdapter
+    private lateinit var productViewMode: ProductViewModel
+    private lateinit var productAdapter: ProductAdapter
 
-    lateinit var rvProductList: RecyclerView
-    lateinit var swipeRefreshListing: SwipeRefreshLayout
-    lateinit var swipeRefreshLayoutError: SwipeRefreshLayout
+    private lateinit var rvProductList: RecyclerView
+    private lateinit var swipeRefreshListing: SwipeRefreshLayout
+    private lateinit var swipeRefreshLayoutError: SwipeRefreshLayout
 
-    lateinit var progressBar: ProgressBar
-    lateinit var ivError: ImageView
+    private var progressBarDialog: Dialog? = null
+    private lateinit var ivError: ImageView
 
-    lateinit var fabAddProduct: FloatingActionButton
+    private lateinit var fabAddProduct: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -83,7 +85,6 @@ class ProductListingFragment : Fragment() {
         rvProductList = view.findViewById(R.id.rv_productList)
         swipeRefreshListing = view.findViewById(R.id.swipeRefreshLayout_listing)
         swipeRefreshLayoutError = view.findViewById(R.id.swipeRefreshLayout_error)
-        progressBar = view.findViewById(R.id.progressBar)
         ivError = view.findViewById(R.id.iv_error)
         fabAddProduct = view.findViewById(R.id.fab_add_product)
     }
@@ -95,15 +96,15 @@ class ProductListingFragment : Fragment() {
     }
 
     private fun productListLoading() {
-        if (progressBar.visibility != View.VISIBLE && !swipeRefreshListing.isRefreshing) {
-            progressBar.visibility = View.VISIBLE
+        if (progressBarDialog?.isShowing != true && !swipeRefreshListing.isRefreshing) {
+            progressBarDialog = showLoadingDialog(requireContext())
         }
         ivError.visibility = View.GONE
         swipeRefreshLayoutError.visibility = View.GONE
     }
 
     private fun productListingSuccess() {
-        progressBar.visibility = View.GONE
+        hideLoadingDialog(progressBarDialog)
         ivError.visibility = View.GONE
         if (swipeRefreshListing.visibility != View.VISIBLE) {
             swipeRefreshListing.visibility = View.VISIBLE
@@ -114,7 +115,7 @@ class ProductListingFragment : Fragment() {
     }
 
     private fun productListingError() {
-        progressBar.visibility = View.GONE
+        hideLoadingDialog(progressBarDialog)
         rvProductList.visibility = View.GONE
         swipeRefreshListing.visibility = View.GONE
         if (swipeRefreshLayoutError.visibility != View.VISIBLE) {

@@ -20,6 +20,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <include
+        android:id="@+id/internet_not_available"
+        layout="@layout/internet_not_available"
+        android:visibility="gone"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:layout_height="match_parent"
