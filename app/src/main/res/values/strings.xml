@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Swipe</string>
     <string name="add">Add</string>
     <!--  Product Listing  -->
     <string name="product_price">Price: ₹%s</string>
