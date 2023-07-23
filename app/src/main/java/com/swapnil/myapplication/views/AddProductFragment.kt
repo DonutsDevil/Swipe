@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -69,6 +70,11 @@ class AddProductFragment : Fragment() {
         return view
     }
 
+    override fun onPause() {
+        super.onPause()
+        productViewModel.setProductValues(name = etProductName.text.toString(), type = etProductType.text.toString(), price = etProductPrice.text.toString(), tax = etProductTax.text.toString())
+    }
+
     private fun initView(view: View) {
         ivSelectImage = view.findViewById(R.id.iv_select_image)
         btnAddProduct = view.findViewById(R.id.btn_add_product)
@@ -96,14 +102,33 @@ class AddProductFragment : Fragment() {
         tvProductPrice.text = getString(R.string.product_price_label)
         tvProductTax.text = getString(R.string.product_tax_label)
 
-        etProductPrice.inputType = InputType.TYPE_CLASS_NUMBER
-        etProductTax.inputType = InputType.TYPE_CLASS_NUMBER
+        etProductPrice.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+        etProductTax.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
         etProductPrice.setHint(R.string.product_price_hint)
         etProductTax.setHint(R.string.product_tax_hint)
         etProductName.setHint(R.string.product_name_hint)
         etProductType.setHint(R.string.product_type_hint)
 
+        if (!TextUtils.isEmpty(productViewModel.productName)) {
+            etProductName.setText(productViewModel.productName)
+        }
+
+        if (!TextUtils.isEmpty(productViewModel.productType)) {
+            etProductType.setText(productViewModel.productType)
+        }
+
+        if (!TextUtils.isEmpty(productViewModel.productPrice)) {
+            etProductPrice.setText(productViewModel.productPrice)
+        }
+
+        if (!TextUtils.isEmpty(productViewModel.productTax)) {
+            etProductTax.setText(productViewModel.productTax)
+        }
+
+        if (productViewModel.productImageUri != null) {
+            ivSelectImage.setImageURI(productViewModel.productImageUri)
+        }
     }
 
     private val imagePickerLauncher =
@@ -149,6 +174,7 @@ class AddProductFragment : Fragment() {
         // The cropped image is available in the 'data' Intent
         val croppedUri = UCrop.getOutput(data)
         Log.d(TAG, "handleCroppedImage: croppedUri: $croppedUri")
+        productViewModel.setProductValues(imageUri = croppedUri)
         ivSelectImage.setImageURI(croppedUri)
     }
 }
