@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return (navigateUp(navHostFragment.navController, (null as AppBarConfiguration?)!!)
+        return (navigateUp(navHostFragment.navController, null)
                 || super.onSupportNavigateUp())
     }
 }

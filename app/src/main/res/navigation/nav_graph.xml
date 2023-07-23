@@ -9,5 +9,18 @@
         android:id="@+id/productListingFragment"
         android:name="com.swapnil.myapplication.views.ProductListingFragment"
         android:label="Products Listing"
-        tools:layout="@layout/fragment_product_listing" />
+        tools:layout="@layout/fragment_product_listing" >
+        <action
+            android:id="@+id/action_productListingFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.swapnil.myapplication.views.AddProductFragment"
+        android:label="Add Product"
+        tools:layout="@layout/fragment_add_product" />
 </navigation>

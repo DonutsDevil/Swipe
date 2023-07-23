@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.swapnil.myapplication.R
 import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.ProductRepository
@@ -31,6 +33,8 @@ class ProductListingFragment : Fragment() {
     lateinit var progressBar: ProgressBar
     lateinit var ivError: ImageView
 
+    lateinit var fabAddProduct: FloatingActionButton
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -42,6 +46,9 @@ class ProductListingFragment : Fragment() {
         )[ProductViewModel::class.java]
         initView(view)
         setUpProductListRv()
+        fabAddProduct.setOnClickListener {
+            it.findNavController().navigate(R.id.action_productListingFragment_to_addProductFragment)
+        }
         return view
     }
 
@@ -75,6 +82,7 @@ class ProductListingFragment : Fragment() {
         swipeRefreshLayoutError = view.findViewById(R.id.swipeRefreshLayout_error)
         progressBar = view.findViewById(R.id.progressBar)
         ivError = view.findViewById(R.id.iv_error)
+        fabAddProduct = view.findViewById(R.id.fab_add_product)
     }
 
     private fun setUpProductListRv() {
