@@ -45,6 +45,11 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         if (!areFieldsValid) {
             return
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val product = Product(name = name, price = price?.toDouble(), type = type, tax = tax?.toDouble())
+            val productResponseState = productRepository.addProduct(product, productImageUri)
+            _addProduct.postValue(productResponseState)
+        }
     }
 
     /**
@@ -71,12 +76,15 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
     }
 
     /**
-     * Clears [_addProduct] data
+     * Clears [_addProduct] data and makes it to Reset State.
      */
     fun clearAddProductCache() {
         _addProduct.postValue(State.Reset())
     }
 
+    /**
+     * Saves values in view model for configuration changes
+     */
     fun setProductValues(
         imageUri: Uri? = null,
         name: String? = null,

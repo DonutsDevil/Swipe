@@ -19,29 +19,29 @@
             android:layout_gravity="center_horizontal"
             android:padding="8dp"/>
 
-        <include
-            android:id="@+id/productName"
-            layout="@layout/text_edittext_ll"/>
+            <include
+                android:id="@+id/productName"
+                layout="@layout/text_edittext_ll" />
 
-        <include
-            android:id="@+id/productType"
-            layout="@layout/text_edittext_ll"/>
+            <include
+                android:id="@+id/productType"
+                layout="@layout/text_edittext_ll" />
 
-        <include
-            android:id="@+id/productPrice"
-            layout="@layout/text_edittext_ll"/>
+            <include
+                android:id="@+id/productPrice"
+                layout="@layout/text_edittext_ll" />
 
-        <include
-            android:id="@+id/productTax"
-            layout="@layout/text_edittext_ll"/>
+            <include
+                android:id="@+id/productTax"
+                layout="@layout/text_edittext_ll" />
 
-        <Button
-            android:id="@+id/btn_add_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/add"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_add_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/add"
+                android:textAllCaps="false"/>
     </LinearLayout>
 
 </ScrollView>

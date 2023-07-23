@@ -1,6 +1,7 @@
 package com.swapnil.myapplication.views
 
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -17,6 +18,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +28,8 @@ import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.AddProductErrors
 import com.swapnil.myapplication.repository.ProductRepository
 import com.swapnil.myapplication.repository.State
+import com.swapnil.myapplication.utils.hideLoadingDialog
+import com.swapnil.myapplication.utils.showLoadingDialog
 import com.swapnil.myapplication.viewmodel.ProductViewModel
 import com.swapnil.myapplication.viewmodel.ProductViewModelFactory
 import com.yalantis.ucrop.UCrop
@@ -53,6 +57,8 @@ class AddProductFragment : Fragment() {
 
     private lateinit var tvProductTax: TextView
     private lateinit var etProductTax: EditText
+
+    private var progressBarDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,19 +92,23 @@ class AddProductFragment : Fragment() {
         productViewModel.addProduct.observe(this) { state ->
             when(state) {
                 is State.Loading -> {
-
+                    showProgressState(View.VISIBLE)
                 }
 
                 is State.Error -> {
+                    showProgressState(View.INVISIBLE)
                     setError(state)
                 }
 
                 is State.Success -> {
-
+                    productViewModel.clearAddProductCache()
+                    Toast.makeText(requireContext(), "Successfully added Product", Toast.LENGTH_SHORT).show()
+                    clearFields()
                 }
 
                 is State.Reset -> {
                     // do nothing
+                    showProgressState(View.INVISIBLE)
                 }
             }
         }
@@ -238,6 +248,26 @@ class AddProductFragment : Fragment() {
             AddProductErrors.TAX.name -> {
                 etProductTax.error = AddProductErrors.TAX.errorMessage
             }
+            else -> {
+                Toast.makeText(requireContext(), state.errorMessage, Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+    private fun clearFields() {
+        etProductTax.text = null
+        etProductPrice.text = null
+        etProductName.text = null
+        etProductType.text = null
+        ivSelectImage.setImageResource(R.drawable.select_image)
+    }
+
+    private fun showProgressState(state: Int) {
+        if (state == View.VISIBLE) {
+            progressBarDialog = showLoadingDialog(requireContext())
+        } else {
+            hideLoadingDialog(progressBarDialog)
+        }
+    }
+
 }

@@ -15,6 +15,4 @@ data class Product(
     val type: String? = null,
     @SerializedName("tax")
     val tax: Double? = null,
-    @Expose(serialize = false, deserialize = false)
-    val file: File? = null // only used when doing post request to the product.
 )

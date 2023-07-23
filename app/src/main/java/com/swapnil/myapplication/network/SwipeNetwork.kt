@@ -14,13 +14,21 @@ class SwipeNetwork {
         private const val TAG = "SwipeNetwork"
         private val INSTANCES = mutableMapOf<String, Retrofit>()
 
-        fun getRetrofitInstance(baseUrl: String, gson: Gson? = null): Retrofit? {
+        /**
+         * Create a Retrofit instance, if already created will return the created one rather then creating new
+         * @param baseUrl: url used as key which retrofit instance is created
+         * @param gson: any gson to be added in option
+         * @param forceCreation: will create a new retrofit instance and overwrite the [baseUrl] retrofit if present
+         *
+         * @return retrofit instance
+         */
+        fun getRetrofitInstance(baseUrl: String, gson: Gson? = null, forceCreation: Boolean = false): Retrofit? {
             if (TextUtils.isEmpty(baseUrl)) {
                 Log.d(TAG, "getRetrofitInstance: baseUrl is empty")
                 return null
             }
             return synchronized(INSTANCES) {
-                if (INSTANCES.containsKey(baseUrl)) {
+                if (INSTANCES.containsKey(baseUrl) && !forceCreation) {
                     return@synchronized INSTANCES[baseUrl]
                 } else {
                     val client = OkHttpClient.Builder()
