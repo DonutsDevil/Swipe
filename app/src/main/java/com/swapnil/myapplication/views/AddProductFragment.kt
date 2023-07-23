@@ -6,11 +6,16 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -31,6 +36,20 @@ class AddProductFragment : Fragment() {
     private lateinit var productViewModel: ProductViewModel
 
     private lateinit var ivSelectImage: ImageView
+    private lateinit var btnAddProduct: Button
+
+    private lateinit var tvProductName: TextView
+    private lateinit var etProductName: EditText
+
+    private lateinit var tvProductType: TextView
+    private lateinit var etProductType: EditText
+
+    private lateinit var tvProductPrice: TextView
+    private lateinit var etProductPrice: EditText
+
+    private lateinit var tvProductTax: TextView
+    private lateinit var etProductTax: EditText
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,11 +65,45 @@ class AddProductFragment : Fragment() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             imagePickerLauncher.launch(intent)
         }
+        setProductLabelAndEditText()
         return view
     }
 
     private fun initView(view: View) {
         ivSelectImage = view.findViewById(R.id.iv_select_image)
+        btnAddProduct = view.findViewById(R.id.btn_add_product)
+
+        val llProductName: LinearLayout = view.findViewById(R.id.productName)
+        tvProductName = llProductName.findViewById(R.id.tv_label)
+        etProductName = llProductName.findViewById(R.id.et_label_ans)
+
+        val llProductType: LinearLayout = view.findViewById(R.id.productType)
+        tvProductType = llProductType.findViewById(R.id.tv_label)
+        etProductType = llProductType.findViewById(R.id.et_label_ans)
+
+        val llProductPrice: LinearLayout = view.findViewById(R.id.productPrice)
+        tvProductPrice = llProductPrice.findViewById(R.id.tv_label)
+        etProductPrice = llProductPrice.findViewById(R.id.et_label_ans)
+
+        val llProductTax: LinearLayout = view.findViewById(R.id.productTax)
+        tvProductTax = llProductTax.findViewById(R.id.tv_label)
+        etProductTax = llProductTax.findViewById(R.id.et_label_ans)
+    }
+
+    private fun setProductLabelAndEditText() {
+        tvProductName.text = getString(R.string.product_name_label)
+        tvProductType.text = getString(R.string.product_type_label)
+        tvProductPrice.text = getString(R.string.product_price_label)
+        tvProductTax.text = getString(R.string.product_tax_label)
+
+        etProductPrice.inputType = InputType.TYPE_CLASS_NUMBER
+        etProductTax.inputType = InputType.TYPE_CLASS_NUMBER
+
+        etProductPrice.setHint(R.string.product_price_hint)
+        etProductTax.setHint(R.string.product_tax_hint)
+        etProductName.setHint(R.string.product_name_hint)
+        etProductType.setHint(R.string.product_type_hint)
+
     }
 
     private val imagePickerLauncher =
