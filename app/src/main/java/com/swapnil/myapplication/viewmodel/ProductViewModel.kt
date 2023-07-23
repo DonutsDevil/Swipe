@@ -46,7 +46,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
-            val product = Product(name = name, price = price?.toDouble(), type = type, tax = tax?.toDouble())
+            val product = Product(name = name, price = price?.toDouble(), type = type, tax = tax?.toDouble(), id = -1)
             val productResponseState = productRepository.addProduct(product, productImageUri)
             _addProduct.postValue(productResponseState)
         }

@@ -1,10 +1,13 @@
 package com.swapnil.myapplication.model
 
-import com.google.gson.annotations.Expose
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import java.io.File
 
+@Entity
 data class Product(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     @SerializedName("image")
     val images: String? = null,
     @SerializedName("price")

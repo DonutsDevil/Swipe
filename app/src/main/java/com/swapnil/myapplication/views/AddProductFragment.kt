@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.swapnil.myapplication.R
+import com.swapnil.myapplication.local.product.ProductLocalServiceImpl
 import com.swapnil.myapplication.model.ProductResponse
 import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.AddProductErrors
@@ -68,7 +69,7 @@ class AddProductFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_product, container, false)
         productViewModel = ViewModelProvider(
             requireActivity(),
-            ProductViewModelFactory(ProductRepository((ProductNetworkServiceImpl())))
+            ProductViewModelFactory(ProductRepository(ProductNetworkServiceImpl(), ProductLocalServiceImpl()))
         )[ProductViewModel::class.java]
         initView(view)
         ivSelectImage.setOnClickListener {
@@ -249,7 +250,7 @@ class AddProductFragment : Fragment() {
                 etProductTax.error = AddProductErrors.TAX.errorMessage
             }
             else -> {
-                Toast.makeText(requireContext(), state.errorMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
     }

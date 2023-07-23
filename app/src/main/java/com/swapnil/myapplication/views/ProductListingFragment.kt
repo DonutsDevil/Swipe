@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.swapnil.myapplication.R
+import com.swapnil.myapplication.local.product.ProductLocalServiceImpl
 import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.ProductRepository
 import com.swapnil.myapplication.repository.State
@@ -44,7 +45,7 @@ class ProductListingFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_product_listing, container, false)
         productViewMode = ViewModelProvider(
             requireActivity(),
-            ProductViewModelFactory(ProductRepository(ProductNetworkServiceImpl()))
+            ProductViewModelFactory(ProductRepository(ProductNetworkServiceImpl(), ProductLocalServiceImpl()))
         )[ProductViewModel::class.java]
         initView(view)
         setUpProductListRv()
