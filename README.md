@@ -4,6 +4,9 @@ It is a simple app which show random data from the server, The data has image, P
 - It offline capable 😃
 - Clean and Simple Material UI.
 
+## UPDATE
+Added Dependency Injection using Dagger2
+
 ## Build with 🛠
 - Kotlin
 - Android Architecture Components - Collection of libraries that help you design robust, testable, and maintainable apps.
@@ -16,12 +19,17 @@ It is a simple app which show random data from the server, The data has image, P
 - MVVM
 - Single Activity
 - Coroutines
+- Dagger2
 
 ## Package Structure
 ```
 com.swapnil.myapplication                  # Root Package
 .
 ├── constants                              # constant variables
+|
+├── di                                     # Dependency Package
+│   ├── module                             # Dependency Providers
+│   ├── component                          # Connecting Consumer and producer
 |
 ├── model                                  # Model classes
 |
