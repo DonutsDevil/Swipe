@@ -12,6 +12,7 @@ import com.swapnil.myapplication.repository.ProductRepository
 import com.swapnil.myapplication.repository.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
     private val TAG = "ProductViewModel"
@@ -110,7 +111,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
     }
 }
 
-class ProductViewModelFactory(private val productRepository: ProductRepository) : ViewModelProvider.Factory {
+class ProductViewModelFactory @Inject constructor(private val productRepository: ProductRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProductViewModel::class.java)) {

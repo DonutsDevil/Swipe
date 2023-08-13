@@ -23,11 +23,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.swapnil.myapplication.R
-import com.swapnil.myapplication.local.product.ProductLocalServiceImpl
 import com.swapnil.myapplication.model.ProductResponse
-import com.swapnil.myapplication.network.product.ProductNetworkServiceImpl
 import com.swapnil.myapplication.repository.AddProductErrors
-import com.swapnil.myapplication.repository.ProductRepository
 import com.swapnil.myapplication.repository.State
 import com.swapnil.myapplication.utils.hideLoadingDialog
 import com.swapnil.myapplication.utils.showLoadingDialog
@@ -36,6 +33,7 @@ import com.swapnil.myapplication.viewmodel.ProductViewModelFactory
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
 private const val TAG = "AddProductFragment"
 
@@ -61,15 +59,19 @@ class AddProductFragment : Fragment() {
 
     private var progressBarDialog: Dialog? = null
 
+    @Inject
+    lateinit var productViewModelFactory: ProductViewModelFactory
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_product, container, false)
+        (view.context.applicationContext as SwipeApplication).component.inject(this)
         productViewModel = ViewModelProvider(
             requireActivity(),
-            ProductViewModelFactory(ProductRepository(ProductNetworkServiceImpl(), ProductLocalServiceImpl()))
+            productViewModelFactory
         )[ProductViewModel::class.java]
         initView(view)
         ivSelectImage.setOnClickListener {

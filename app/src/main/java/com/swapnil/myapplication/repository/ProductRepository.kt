@@ -8,9 +8,10 @@ import com.swapnil.myapplication.model.Product
 import com.swapnil.myapplication.model.ProductResponse
 import com.swapnil.myapplication.network.product.ProductNetworkService
 import java.io.IOException
+import javax.inject.Inject
 
 private const val TAG = "ProductRepository"
-class ProductRepository(private val networkService: ProductNetworkService, private val localService: ProductLocalService) {
+class ProductRepository @Inject constructor(private val networkService: ProductNetworkService, private val localService: ProductLocalService) {
 
     suspend fun getAllProducts(context: Context): State<List<Product>> {
         return try {

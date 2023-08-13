@@ -20,15 +20,16 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import java.io.File
+import javax.inject.Inject
 
 /**
  * Server service Implementation
  */
-class ProductNetworkServiceImpl : ProductNetworkService {
+class ProductNetworkServiceImpl @Inject constructor(private val productAPI: ProductAPI) : ProductNetworkService {
     private val TAG = "ProductNetworkServiceIm"
 
     override suspend fun getAllProducts(): List<Product> {
-        val response = getRetrofitInstance().getAllProducts()
+        val response = productAPI.getAllProducts()
         if (response != null && response.isSuccessful) {
             val listOfProducts = response.body()
             Log.d(TAG, "getAllProducts: List of products: $listOfProducts")
@@ -77,7 +78,7 @@ class ProductNetworkServiceImpl : ProductNetworkService {
         val imagePart = MultipartBody.Part.createFormData("files[]", file.name, requestFile)
         Log.d(TAG, "addProductWithFile: imagePart: $imagePart")
 
-        val response = getRetrofitInstance().createProduct(
+        val response = productAPI.createProduct(
             productNameRequestBody,
             productTypeRequestBody,
             priceRequestBody,
@@ -95,7 +96,7 @@ class ProductNetworkServiceImpl : ProductNetworkService {
         val priceRequestBody = requestBody[2]
         val taxRequestBody = requestBody[3]
 
-        val response = getRetrofitInstance().createProduct(
+        val response = productAPI.createProduct(
             productNameRequestBody,
             productTypeRequestBody,
             priceRequestBody,
