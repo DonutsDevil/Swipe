@@ -69,4 +69,8 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     implementation 'com.github.yalantis:ucrop:2.2.6'
+
+    def dagger2 = "2.47"
+    implementation "com.google.dagger:dagger:$dagger2"
+    kapt "com.google.dagger:dagger-compiler:$dagger2"
 }
