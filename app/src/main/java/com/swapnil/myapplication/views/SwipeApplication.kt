@@ -8,6 +8,6 @@ class SwipeApplication : Application() {
     lateinit var component: ApplicationComponent
     override fun onCreate() {
         super.onCreate()
-        component = DaggerApplicationComponent.builder().build()
+        component = DaggerApplicationComponent.factory().create(this)
     }
 }
