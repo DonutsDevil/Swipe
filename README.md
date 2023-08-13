@@ -4,6 +4,9 @@ It is a simple app which show random data from the server, The data has image, P
 - It offline capable 😃
 - Clean and Simple Material UI.
 
+## UPDATE 
+Added Dependency Inject, which Can be found in the branch [master-DI](https://github.com/DonutsDevil/Swipe/tree/master-DI)
+
 ## Build with 🛠
 - Kotlin
 - Android Architecture Components - Collection of libraries that help you design robust, testable, and maintainable apps.
